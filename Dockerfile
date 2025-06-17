@@ -1,26 +1,26 @@
 FROM n8nio/n8n
 
-# 👉 Switch to root để cài nginx
+# 👉 Chuyển sang root để cài nginx + bash
 USER root
 
-# Cài nginx
-RUN apk add --no-cache nginx
+# Cài nginx và bash
+RUN apk add --no-cache nginx bash
 
-# Tạo thư mục chạy nginx và copy file xác thực
+# Tạo thư mục cho nginx
 RUN mkdir -p /run/nginx /usr/share/nginx/html
 
-# Copy file HTML xác thực vào nginx
+# Copy file xác thực Zalo OA
 COPY ./static /usr/share/nginx/html
 
-# Copy file cấu hình nginx
+# Copy config nginx
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy script để khởi động song song nginx + n8n
+# Copy start.sh và cấp quyền thực thi
 COPY ./start.sh /start.sh
 RUN chmod +x /start.sh
 
 # 👉 Chuyển lại về user node
 USER node
 
-# ✅ FIX: Dùng "sh" thay vì "/bin/sh"
-CMD ["sh", "/start.sh"]
+# 🔥 Dùng bash thay vì sh
+CMD ["bash", "/start.sh"]

@@ -5,9 +5,9 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     envVars:
-      - key: N8N_PORT
-        value: 5678
       - key: N8N_BASIC_AUTH_USER
         value: admin
       - key: N8N_BASIC_AUTH_PASSWORD
         value: your_password
+      - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+        value: true
