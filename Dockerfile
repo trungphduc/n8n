@@ -1,26 +1,26 @@
-FROM n8nio/n8n
+FROM node:18-alpine
 
-# 👉 Chuyển sang root để cài nginx + bash
-USER root
+# Cài bash, nginx, các công cụ cần
+RUN apk add --no-cache bash nginx
 
-# Cài nginx và bash
-RUN apk add --no-cache nginx bash
+# Cài n8n global
+RUN npm install -g n8n
 
-# Tạo thư mục cho nginx
-RUN mkdir -p /run/nginx /usr/share/nginx/html
+# Tạo thư mục cần thiết
+RUN mkdir -p /usr/share/nginx/html /run/nginx
 
-# Copy file xác thực Zalo OA
+# Copy file HTML xác thực
 COPY ./static /usr/share/nginx/html
 
 # Copy config nginx
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy start.sh và cấp quyền thực thi
+# Copy script start.sh
 COPY ./start.sh /start.sh
 RUN chmod +x /start.sh
 
-# 👉 Chuyển lại về user node
-USER node
+# Expose cả 2 cổng: n8n (5678), nginx (8081)
+EXPOSE 5678 8081
 
-# 🔥 Dùng bash thay vì sh
-CMD ["bash", "/start.sh"]
+# CMD chạy cả nginx và n8n song song
+CMD ["sh", "/start.sh"]
