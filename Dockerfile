@@ -19,8 +19,8 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./start.sh /start.sh
 RUN chmod +x /start.sh
 
-# 👉 Chuyển lại về user node để chạy n8n an toàn
+# 👉 Chuyển lại về user node
 USER node
 
-# Dùng script khởi động song song
-CMD ["/bin/sh", "/start.sh"]
+# ✅ FIX: Dùng "sh" thay vì "/bin/sh"
+CMD ["sh", "/start.sh"]
